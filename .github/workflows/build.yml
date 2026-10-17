@@ -22,10 +22,11 @@ jobs:
         run: |
           curl -L -o proot.tar.gz https://github.com/green-green-avk/build-proot-android/raw/master/packages/proot-android-aarch64.tar.gz
           mkdir pr && tar xzf proot.tar.gz -C pr
+          find pr -type f
           D=proj/app/src/main/jniLibs/arm64-v8a
           mkdir -p $D
-          cp pr/root/bin/proot $D/libproot.so
-          cp pr/root/libexec/loader $D/libproot-loader.so
+          cp "$(find pr -path '*/bin/proot' -type f | head -1)" $D/libproot.so
+          cp "$(find pr -name loader -type f | head -1)" $D/libproot-loader.so
           ls -l $D
       - name: Build
         working-directory: proj
